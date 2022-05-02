@@ -187,8 +187,8 @@
 						                                <thead>
 						                                    <tr>
 						                                        <th scope="col">Name</th>
-						                                        <th scope="col">phone</th>
-						                                        <th scope="col">address</th>
+						                                        <th scope="col">Phone</th>
+						                                        <th scope="col">Address</th>
 						                                    </tr>
 						                                </thead>
 						                                <tbody id="receiver_info_body">
@@ -223,8 +223,8 @@
 						                                    <tr>
 						                                        <th scope="col"></th>
 						                                        <th scope="col">Item</th>
-						                                        <th scope="col">Quentity</th>
-						                                        <th scope="col">price</th>
+						                                        <th scope="col">Quantity</th>
+						                                        <th scope="col">Price</th>
 						                                    </tr>
 						                                </thead>
 						                                <tbody id="item_info_body">
