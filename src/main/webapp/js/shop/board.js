@@ -75,7 +75,10 @@ $(".qna_btn.delete").on("click", function(){
 							$.ajax({
 								url: "qna_delete_rest",
 								method: "post",
-								data: {"q_no":q_no},
+								data: {
+										"q_no":q_no,
+										"pageno":pageno
+										},
 								dataType: "json",
 								success:function(resultObj){
 									if(resultObj.errorCode > 0){
@@ -111,7 +114,6 @@ $(".qna_btn.update").on("click", function(){
 		ToastConfirm.fire({ icon: 'question', 
 							title: "게시글을 수정하시겠습니까?"}).then((result) => {
 							if(result.isConfirmed){
-								let q_no = $(this).attr("q_no"); 
 								$("#qna_update_form").attr("action", "qna_update"); 
 								$("#qna_update_form").submit(); // q_no, q_titla, q_content 
 							}
