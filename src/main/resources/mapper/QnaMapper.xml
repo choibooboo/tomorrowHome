@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.qnaMapper">
+
+	<!-- 새로운 게시물 추가 -->  
+	<insert id="insertNewQna" parameterType="com.itwill.tomorrowHome.domain.Qna">
+		insert into qna(q_no, q_title, q_content, q_date, q_count, q_group_no, q_step, q_depth, m_id)
+		values(qna_q_no_seq.nextval, #{q_title}, #{q_content}, sysdate, 0, qna_q_no_seq.currval, 1, 0, #{m_id})
+	</insert>
+	
+	<!-- 게시물 하나 조회 -->
+	<select id="selectQna" parameterType="int" resultType="com.itwill.tomorrowHome.domain.Qna"> 
+		select q_no, q_title, q_content, q_date, q_count, q_group_no, q_step, q_depth, m_id  
+		from qna where q_no = #{q_no}
+	</select>
+	
+	<!-- 답글 추가 -->
+	<insert id="insertReply" parameterType="com.itwill.tomorrowHome.domain.Qna">
+		insert into qna(q_no, q_title, q_content, q_date, q_count, q_group_no, q_step, q_depth, m_id) 
+		values (qna_q_no_seq.nextval,#{q_title},#{q_content},sysdate,0,#{q_group_no},#{q_step},#{q_depth},#{m_id})
+	</insert>
+	
+	<!-- 답글 등록시 기존 글들의 순서 변경 -->
+	<update id="updateStep" parameterType="map">
+		update qna set q_step = q_step + 1 where q_step > #{q_step} AND q_group_no = #{q_group_no}
+	</update>
+	
+	<!-- 게시물 리스트 조회 -->
+	<select id="selectQnaList" parameterType="map" resultType="com.itwill.tomorrowHome.domain.Qna">
+		select * 
+		from(select rownum idx, s.* 
+				from ( select q_no, q_title, m_id, q_date, q_count, q_group_no, q_step, q_depth 
+						from qna 
+						order by q_group_no desc, q_step asc 
+						) s 
+				)
+			where idx <![CDATA[ >= ]]> #{start} and idx <![CDATA[ <= ]]> #{last}
+	</select> 
+	
+	<!-- 게시물 삭제 -->
+	<delete id="deleteQna" parameterType="int"> 
+		delete qna where q_no = #{q_no}
+	</delete>
+
+	<!-- 게시물 수정 -->
+	<update id="updateQna" parameterType="com.itwill.tomorrowHome.domain.Qna"> 
+		update qna set q_title = #{q_title}, q_content = #{q_content} where q_no = #{q_no}
+	</update>
+	
+	<!-- 게시물 조회수 변경 -->
+	<update id="updateReadCount" parameterType="int"> 
+		update qna set q_count = q_count+1 where q_no = #{q_no}
+	</update>
+	
+	<!-- 전체 게시물 수 조회 -->
+	<select id="selectQnaCount" resultType="int">
+		select count(*) cnt from qna
+	</select>
+
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<!-- 스프링 웹 MVC실행을 위한 객체를 생성(HandlerMapping) -->
+	<mvc:annotation-driven />
+	<!-- 어노테이션을 스캔해서 bean생성과 DI -->
+	<context:component-scan base-package="com.itwill.tomorrowHome.controller" />
+	<!-- 매핑되지 않은 요청을 처리하는 기본 서블릿을 생성 -->
+	<mvc:default-servlet-handler/>
+	
+	<!-- interceptor -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/> 
+			<bean class="com.itwill.tomorrowHome.controller.interceptor.AuthLoginAnnotationInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+	 
+	<!-- ViewResolver -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+		p:prefix="/WEB-INF/views/" p:suffix=".jsp" />
+
+</beans>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.OrderMapper">
+	<resultMap  id="orderResultMap" type="com.itwill.tomorrowHome.domain.Order">
+		<result column="O_NO" property="o_no"/>
+		<result column="O_DESC" property="o_desc"/>
+		<result column="O_DATE" property="o_date"/>
+		<result column="O_PRICE" property="o_price"/>
+		<result column="O_PAY_METHOD" property="o_pay_method"/>
+		<result column="O_STATUS" property="o_status"/>
+		<result column="O_RV_NAME" property="o_rv_name"/>
+		<result column="O_RV_PHONE" property="o_rv_phone"/>
+		<result column="O_RV_ADDRESS" property="o_rv_address"/>
+		<result column="O_RV_POST" property="o_rv_post"/>
+		<result column="O_MESSAGE" property="o_message"/>
+		<result column="M_ID" property="m_id"/>
+		<collection property="orderItemList" ofType="com.itwill.tomorrowHome.domain.OrderItem">
+			<result column="OI_NO" property="oi_no"/>
+			<result column="OI_QTY" property="oi_qty"/>
+			<result column="O_NO" property="o_no"/>
+			<association property="product" javaType="com.itwill.tomorrowHome.domain.Product">
+				<result column="P_NO" property="p_no"/>
+				<result column="P_NAME" property="p_name"/>
+				<result column="P_PRICE" property="p_price"/>
+				<result column="P_DESC" property="p_desc"/>
+				<result column="P_DATE" property="p_date"/>
+				<result column="P_AVG_SCORE" property="p_avg_score"/>
+				<result column="P_COLOR" property="p_color"/>
+				<result column="P_BRAND" property="p_brand"/>
+				<result column="CG_NO" property="cg_no"/>
+		 	<collection property="imageList" ofType="com.itwill.tomorrowHome.domain.Image">
+		 		<result column="IM_NO" property="im_no"/>
+		 		<result column="IM_DIV" property="im_div"/>
+		 		<result column="IM_NAME" property="im_name"/>
+		 		<result column="P_NO" property="p_no"/>
+		 	</collection>
+			</association>
+		</collection>
+	</resultMap>
+	
+	<select id="detail" resultMap="orderResultMap" parameterType="int" >
+		select * from orders o 
+		join order_item oi on o.o_no=oi.o_no 
+		join product p on oi.p_no=p.p_no 
+        left outer join image i on p.p_no = i.p_no 
+		where o.o_no=#{o_no}
+	</select>
+	
+	<insert id="createOrder" parameterType="com.itwill.tomorrowHome.domain.Order">
+		insert into orders(o_no,o_desc,o_date,o_price, o_pay_method, o_status,o_rv_name,o_rv_phone,o_rv_address,o_rv_post,o_message,m_id)
+        values(orders_o_no_SEQ.nextval,#{o_desc},sysdate,#{o_price}, #{o_pay_method}, #{o_status},#{o_rv_name},#{o_rv_phone},#{o_rv_address},#{o_rv_post},#{o_message},#{m_id})
+	</insert>
+	
+	<insert id="createOrderItem" parameterType="com.itwill.tomorrowHome.domain.OrderItem">
+		insert into order_item(oi_no,oi_qty,o_no,p_no) 
+		values(order_item_oi_no_SEQ.nextval,#{oi_qty},orders_o_no_SEQ.currval,#{product.p_no})
+	</insert>
+
+	<delete id="delete" parameterType="java.lang.String">
+		delete orders where m_id = #{m_id}
+	</delete>
+	
+	<delete id="deleteByOrderNo" parameterType="_int">
+		delete orders where o_no = #{o_no}
+	</delete>
+	
+	<select id="list" parameterType="java.lang.String" resultType="com.itwill.tomorrowHome.domain.Order">
+		select * from orders where m_id = #{m_id} order by o_no desc
+	</select>
+	
+	<select id="selectMemberProductOrderCount" resultType="int" parameterType="map">
+		select count(*) cnt 
+		from orders o 
+		join order_item oi on o.o_no = oi.o_no 
+		where o.m_id = #{m_id} and oi.p_no = #{p_no}
+	</select>
+</mapper>

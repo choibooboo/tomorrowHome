@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.productMapper">
+
+	<resultMap id="productResultMap" type="com.itwill.tomorrowHome.domain.Product">
+		<result column="P_NO" property="p_no"/>
+		<result column="P_PRICE" property="p_price"/>
+		<result column="P_DESC" property="p_desc"/>
+		<result column="P_DATE" property="p_date"/>
+		<result column="P_AVG_SCORE" property="p_avg_score"/>
+		<result column="P_COLOR" property="p_color"/>
+		<result column="P_BRAND" property="p_brand"/>
+		<result column="P_COUNT" property="p_count"/>
+		<result column="P_CONCEPT" property="p_concept"/>
+		<collection property="imageList" ofType="com.itwill.tomorrowHome.domain.Image" 
+			select="selectProductImageList"	column="P_NO" autoMapping="true" />
+		<collection property="reviewList" ofType="com.itwill.tomorrowHome.domain.Review"
+			select="mapper.reviewMapper.selectProductReviewList" column="P_NO" autoMapping="true" />
+	</resultMap>
+	
+<!-- 
+		map.put("cg_no", cg_no); 
+		map.put("lowPrice", lowPrice); 
+		map.put("highPrice", highPrice); 
+		map.put("color", color);
+		map.put("brand", brand);
+		map.put("score", score);
+		map.put("sortBy", sortBy);
+		map.put("search", search);
+		
+		map.put("start", pageMaker.getPageBegin());
+		map.put("end", pageMaker.getPageEnd());
+ -->
+
+	<!-- 상품리스트 조회 -->
+	<select id="selectProductList" parameterType="map" resultMap="productResultMap">
+		select * from
+			(select rownum rn, t.* 
+			    from ( select * from product  
+				    <if test="sortBy != null and !sortBy.equals('')">
+			    		<if test="sortBy.equals('price_hl')"> 
+			    			order by p_price desc
+			    		</if>
+			    		<if test="sortBy.equals('price_lh')">
+			    			order by p_price
+			    		</if>
+			    		<if test="sortBy.equals('score')">
+			    			order by p_avg_score desc
+			    		</if>
+			    	</if>
+			    	) t 
+			    where 1 = 1 
+		    	<if test="cg_no != null and !cg_no.equals('')">and cg_no = #{cg_no}</if>
+		    	<if test="highPrice != null and !highPrice.equals('')">and p_price between #{lowPrice} and #{highPrice}</if>
+		    	<if test="color != null and !color.equals('')">and p_color = #{color}</if>
+		    	<if test="brand != null and !brand.equals('')">and p_brand = #{brand}</if>
+		    	<if test="score != null and !score.equals('')">and p_avg_score = #{score}</if>
+		    	<if test="search != null and !search.equals('')">and p_name like '%'||#{search}||'%'</if>
+			) 
+			where rn <![CDATA[ >= ]]> #{start} and rn <![CDATA[ <= ]]> #{end}  
+	</select>
+	
+	<!-- 조건별 상품 전체 개수 조회 -->
+	<select id="selectProductListCount" parameterType="map" resultType="int">
+		select count(*) from product where 1 = 1 
+	    	<if test="cg_no != null and !cg_no.equals('')">and cg_no = #{cg_no}</if>
+	    	<if test="highPrice != null and !highPrice.equals('')">and p_price between #{lowPrice} and #{highPrice}</if>
+	    	<if test="color != null and !color.equals('')">and p_color = #{color}</if>
+	    	<if test="brand != null and !brand.equals('')">and p_brand = #{brand}</if>
+	    	<if test="score != null and !score.equals('')">and p_avg_score = #{score}</if>
+	    	<if test="search != null and !search.equals('')">and p_name like '%'||#{search}||'%'</if>
+	</select>
+	
+	<!-- 상품 상세정보 조회 -->
+	<select id="selectProduct" parameterType="int" resultMap="productResultMap">
+		select * from product where p_no = #{p_no} 
+	</select>
+
+	<!-- 상품 평균 평점 수정 -->
+	<update id="updateProductAvgScore" parameterType="map">
+		update product p set p_avg_score = #{avg_score} where p_no = #{p_no}
+	</update>
+
+	<!-- 상품 조회수 증가 -->
+	<update id="updateProductClickCount" parameterType="int">
+		update product set p_count = p_count+1 where p_no = #{p_no}
+	</update>
+	
+	<!-- 멤버가 가장 선호하는 상품 컨셉 조회 -->
+	<select id="selectMemberBestProductConcept" parameterType="String" resultType="String">
+		select p_concept, count(*) cnt from 
+		(
+			select p.p_concept from orders o 
+			join order_item oi on o.o_no = oi.o_no
+			join product p on oi.p_no = p.p_no
+			where o.m_id = #{m_id} 
+			union all 
+			select p.p_concept from cart c 
+			join product p on c.p_no = p.p_no
+			where c.m_id = #{m_id}
+			union all 
+			select p.p_concept from wishlist w 
+			join product p on w.p_no = p.p_no
+			where w.m_id = #{m_id}
+		)
+		group by p_concept
+		order by cnt desc
+	</select>
+	
+	<!-- 인기상품 혹은 추천상품 리스트 조회 -->
+	<select id="selectMainProductList" parameterType="map" resultMap="productResultMap">
+   		select * from 
+		    (select rownum rn, t1.* 
+		    from ( select * from product 
+                    <if test="p_concept != null and !p_concept.equals('')"> 
+                   		where p_concept = #{p_concept}
+               		</if>
+                    order by p_count desc, p_avg_score desc
+		            ) t1 
+		    )
+		where rn <![CDATA[ <= ]]> #{count}
+	</select>
+	
+ 	<!-- 상품의 이미지 리스트 조회 -->
+ 	<select id="selectProductImageList" parameterType="int" resultType="com.itwill.tomorrowHome.domain.Image">
+ 		select * from image where p_no = #{p_no} order by im_no
+ 	</select>
+	
+</mapper>

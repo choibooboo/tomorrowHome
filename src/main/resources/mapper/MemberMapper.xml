@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.MemberMapper">
+
+	<!-- 멤버 생성 -->
+	<insert id="createMember" parameterType="com.itwill.tomorrowHome.domain.Member">
+		insert into member(m_id,m_password,m_name,m_email,m_address,m_post,m_phone) 
+		values (#{m_id},#{m_password},#{m_name},#{m_email},#{m_address},#{m_post},#{m_phone})
+	</insert>
+	<!-- 멤버 비밀번호 변경 -->
+	<update id="updateMemberPassword" parameterType="com.itwill.tomorrowHome.domain.Member">
+		update member set m_password=#{m_password} where m_id=#{m_id}
+	</update>
+	<!-- 멤버 정보 수정 -->
+	<update id="updateMember" parameterType="com.itwill.tomorrowHome.domain.Member">
+		update member set m_password=#{m_password}, m_name=#{m_name}, m_email=#{m_email}, m_address=#{m_address}, m_post=#{m_post}, m_phone=#{m_phone} where m_id=#{m_id}
+	</update>
+	<!-- 멤버 삭제 -->
+	<delete id="deleteMember" parameterType="String">
+		delete member where m_id=#{m_id}
+	</delete>
+	<!-- 멤버 정보 조회 -->
+	<select id="findMember" parameterType="String" resultType="com.itwill.tomorrowHome.domain.Member">
+		select * from member where m_id = #{m_id} 
+	</select>
+	<!-- 회원 아이디 존재확인(아이디 중복체크 위해 필요) -->
+	<select id="existedMember" parameterType="String" resultType="int">
+		select count(*) cnt from member where m_id = #{m_id}
+	</select>
+
+
+
+</mapper>

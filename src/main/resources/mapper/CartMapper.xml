@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.cartMapper">
+
+	<resultMap type="com.itwill.tomorrowHome.domain.Cart" id="cartResultMap">
+			<result column="C_NO" property="c_no"/>
+			<result column="C_QTY" property="c_qty"/>
+			<result column="M_ID" property="m_id"/>
+		<association property="product" javaType="com.itwill.tomorrowHome.domain.Product">
+			<result column="P_NO" property="p_no"/>
+			<result column="P_NAME" property="p_name"/>
+			<result column="P_PRICE" property="p_price"/>
+			<result column="P_DESC" property="p_desc"/>
+			<result column="P_DATE" property="p_date"/>
+			<result column="P_AVG_SCORE" property="p_avg_score"/>
+			<result column="P_COLOR" property="p_color"/>
+			<result column="P_BRAND" property="p_brand"/>
+			<result column="CG_NO" property="cg_no"/>
+				<collection property="imageList" ofType="com.itwill.tomorrowHome.domain.Image">
+					<result column="IM_NO" property="im_no"/>
+					<result column="IM_DIV" property="im_div"/>
+					<result column="IM_NAME" property="im_name"/>
+				</collection>
+		</association>
+	</resultMap>
+	
+	<insert id="addInsert" parameterType="com.itwill.tomorrowHome.domain.Cart">
+		insert into cart(c_no, m_id, p_no, c_qty) values(CART_C_NO_SEQ.nextval,#{m_id},#{product.p_no},#{c_qty})
+	</insert>
+	
+	<update id="updateQty" parameterType="com.itwill.tomorrowHome.domain.Cart">
+		update cart set c_qty=#{c_qty} where c_no=#{c_no}
+	</update>
+	
+	<update id="updateQtyBynoAndid" parameterType="com.itwill.tomorrowHome.domain.Cart">
+		update cart set c_qty=c_qty+#{c_qty} where p_no=#{product.p_no} and m_id=#{m_id}
+	</update>
+	
+	<delete id="removeCartAll" parameterType="java.lang.String">
+		delete cart where m_id = #{m_id}
+	</delete>
+	
+	<delete id="removeCart" parameterType="java.lang.Integer">
+		delete cart where c_no = #{c_no}
+	</delete>
+	
+	
+	
+	<select id="productExist" parameterType="com.itwill.tomorrowHome.domain.Cart" resultType="java.lang.Integer">
+		select count(*) cnt from cart where m_id=#{m_id} and p_no=#{product.p_no}
+	</select>
+	
+	<select id="getCartByNo"  parameterType="java.lang.Integer" resultMap="cartResultMap">
+		select * from cart c 
+		join product p on c.p_no=p.p_no  
+		join image i on p.p_no=i.p_no 
+		where c_no=#{c_no} 
+		and i.im_div='IMG'
+	</select>
+	
+	<select id="cartListAll" parameterType="java.lang.String" 
+			resultMap="cartResultMap">
+		select c_no, c_qty, m_id, p.p_no, p_name, p_price, min(im_name) im_name from cart c 
+			join product p on c.p_no = p.p_no 
+			left outer join image i on p.p_no = i.p_no 
+			where m_id=#{m_id}
+			and i.im_div = 'IMG' 
+			group by c_no, c_qty, m_id, p.p_no, p_name, p_price
+	</select>
+	
+
+
+
+</mapper>
