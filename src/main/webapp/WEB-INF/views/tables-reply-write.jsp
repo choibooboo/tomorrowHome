@@ -71,7 +71,7 @@
 	                                <tbody>
 	                                    <tr>
 	                                        <td id="qna_content_td" colspan="3">
-	                                        	<textarea name="q_content" id="q_content_area" placeholder=" content">>> ${qna.q_content}</textarea>
+	                                        	<textarea name="q_content" id="q_content_area" maxlength="1000">>> ${qna.q_content}</textarea>
 	                                        </td>
 	                                    </tr>
 	                                </tbody>
