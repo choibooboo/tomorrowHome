@@ -2,7 +2,6 @@ package com.itwill.tomorrowHome.dao;
 
 import java.util.List;
 
-import com.itwill.tomorrowHome.domain.Product;
 import com.itwill.tomorrowHome.domain.WishList;
 
 public interface WishListDao {
