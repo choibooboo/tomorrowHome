@@ -76,12 +76,14 @@
 	                            </table>
                        				<input type="hidden" name="q_no" value="${qna.q_no}" />
                       				<input type="hidden" name="pageno" value="${pageno}" />
+                      				<input type="hidden" name="search_type" value="${search_type}" />
+                      				<input type="hidden" name="search_value" value="${search_value}" />
                 			</form>
                         </div>
                     </div>
                     	<div id="qna_btn_container">
 							<input class="qna_btn update" type="button" value="수정" />
-							<input class="qna_btn list" type="button" pageno="${pageno}" value="목록" />
+							<input class="qna_btn list" type="button" pageno="${pageno}" search_type="${search_type}" search_value="${search_value}" value="목록" />
                     	</div>
                 </div>
             </div>

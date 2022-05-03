@@ -205,9 +205,9 @@ public class DaoTestController {
 		System.out.println("게시물하나정보>>>>");
 		System.out.println(qnaDao.selectQna(1));
 		System.out.println("게시물리스트>>>>");
-		System.out.println(qnaDao.selectQnaList(1, 10));
+		//System.out.println(qnaDao.selectQnaList(1, 10));
 		System.out.println("전체게시물개수>>>>");
-		System.out.println(qnaDao.selectQnaCount());
+		//System.out.println(qnaDao.selectQnaCount());
 		/*
 		System.out.println("게시물등록>>>>");
 		Qna qna1 = new Qna();

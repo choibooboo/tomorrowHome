@@ -58,11 +58,13 @@ public class QnaDaoImpl implements QnaDao {
 	 * 게시물 리스트를 반환(게시물시작번호,게시물끝번호)
 	 */
 	@Override
-	public List<Qna> selectQnaList(int start, int last) throws Exception {
+	public List<Qna> selectQnaList(int start, int last, String search_type, String search_value) throws Exception {
 		System.out.println("" + start + " ~ " + last);
-		Map<String, Integer> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>();
 		map.put("start", start);
 		map.put("last", last);
+		map.put("search_type", search_type);
+		map.put("search_value", search_value);
 		return sqlSession.selectList("mapper.qnaMapper.selectQnaList", map);
 	}
 
@@ -94,7 +96,10 @@ public class QnaDaoImpl implements QnaDao {
 	 * 게시물 총 건수를 조회, 반환
 	 */
 	@Override
-	public int selectQnaCount() throws Exception {
-		return sqlSession.selectOne("mapper.qnaMapper.selectQnaCount");
+	public int selectQnaCount(String search_type, String search_value) throws Exception {
+		Map<String, String> map = new HashMap<>();
+		map.put("search_type", search_type);
+		map.put("search_value", search_value);
+		return sqlSession.selectOne("mapper.qnaMapper.selectQnaCount", map);
 	}
 }

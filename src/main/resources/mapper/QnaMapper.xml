@@ -30,7 +30,21 @@
 		select * 
 		from(select rownum idx, s.* 
 				from ( select q_no, q_title, m_id, q_date, q_count, q_group_no, q_step, q_depth 
-						from qna 
+						from qna where 1 = 1 
+						<if test="search_value != null and !search_value.equals('')">
+				    		<if test="search_type.equals('search_title')">
+				    			and q_title like '%'||#{search_value}||'%' 
+				    		</if>
+				    		<if test="search_type.equals('search_content')">
+				    			and q_content like '%'||#{search_value}||'%' 
+				    		</if>
+				    		<if test="search_type.equals('search_all')">
+				    			and q_title like '%'||#{search_value}||'%' or q_content like '%'||#{search_value}||'%'
+				    		</if>
+				    		<if test="search_type.equals('search_writer')">
+				    			and m_id like '%'||#{search_value}||'%' 
+				    		</if>
+			    		</if>
 						order by q_group_no desc, q_step asc 
 						) s 
 				)
@@ -53,8 +67,22 @@
 	</update>
 	
 	<!-- 전체 게시물 수 조회 -->
-	<select id="selectQnaCount" resultType="int">
-		select count(*) cnt from qna
+	<select id="selectQnaCount" parameterType="map" resultType="int">
+		select count(*) cnt from qna where 1 = 1 
+			<if test="search_value != null and !search_value.equals('')">
+	    		<if test="search_type.equals('search_title')">
+	    			and q_title like '%'||#{search_value}||'%' 
+	    		</if>
+	    		<if test="search_type.equals('search_content')">
+	    			and q_content like '%'||#{search_value}||'%' 
+	    		</if>
+	    		<if test="search_type.equals('search_all')">
+	    			and q_title like '%'||#{search_value}||'%' or q_content like '%'||#{search_value}||'%'
+	    		</if>
+	    		<if test="search_type.equals('search_writer')">
+	    			and m_id like '%'||#{search_value}||'%' 
+	    		</if>
+    		</if>
 	</select>
 
 </mapper>

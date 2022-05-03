@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.itwill.tomorrowHome.domain.Member;
 import com.itwill.tomorrowHome.domain.Product;
-import com.itwill.tomorrowHome.domain.Qna;
 import com.itwill.tomorrowHome.service.CartService;
 import com.itwill.tomorrowHome.service.MemberService;
 import com.itwill.tomorrowHome.service.OrderService;
@@ -177,12 +175,14 @@ public class ServiceTestController {
 		System.out.println("게시물하나정보>>>>");
 		System.out.println(qnaService.selectQna(1, "view"));
 		System.out.println("게시물리스트>>>>");
-		PageMakerDto<Qna> pmq = qnaService.selectQnaList(1);
+		//PageMakerDto<Qna> pmq = qnaService.selectQnaList(1);
+		/*
 		for(Qna qna : pmq.getItemList()){
 			System.out.println(qna); 
 		}
+		*/
 		System.out.println("전체게시물개수>>>>"); 
-		System.out.println(qnaService.selectQnaCount()); 
+		//System.out.println(qnaService.selectQnaCount()); 
 		System.out.println("게시물조회수변경>>>"); 
 		qnaService.updateReadCount(1);
 		/*

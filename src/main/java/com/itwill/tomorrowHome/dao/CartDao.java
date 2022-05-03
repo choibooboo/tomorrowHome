@@ -3,7 +3,6 @@ package com.itwill.tomorrowHome.dao;
 import java.util.List;
 
 import com.itwill.tomorrowHome.domain.Cart;
-import com.itwill.tomorrowHome.domain.Product;
 
 public interface CartDao {         
 	/*    

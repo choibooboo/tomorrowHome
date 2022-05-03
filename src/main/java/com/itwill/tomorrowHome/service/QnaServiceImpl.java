@@ -49,13 +49,13 @@ public class QnaServiceImpl implements QnaService {
 	 * 게시물 리스트를 반환
 	 */
 	@Override
-	public PageMakerDto<Qna> selectQnaList(int currentPage) throws Exception {
+	public PageMakerDto<Qna> selectQnaList(int currentPage, String search_type, String search_value) throws Exception {
 		// 1.전체글의 갯수
-		int totRecordCount = qnaDao.selectQnaCount(); 
-		// 2.paging계산(PageMaker 유틸클래스) 
+		int totRecordCount = qnaDao.selectQnaCount(search_type, search_value); 
+		// 2.paging계산(PageMaker 유틸클래스)  
 		PageMaker pageMaker = new PageMaker(totRecordCount, currentPage, 10, 10);
 		// 3.게시물데이타 얻기
-		List<Qna> qnaList = qnaDao.selectQnaList(pageMaker.getPageBegin(), pageMaker.getPageEnd());
+		List<Qna> qnaList = qnaDao.selectQnaList(pageMaker.getPageBegin(), pageMaker.getPageEnd(), search_type, search_value);
 		PageMakerDto<Qna> pageMakerQnaList = new PageMakerDto<Qna>(qnaList, pageMaker, totRecordCount);
 		// 게시글 제목 수정
 		for(Qna qna : pageMakerQnaList.getItemList()) {
@@ -86,14 +86,6 @@ public class QnaServiceImpl implements QnaService {
 	@Override
 	public void updateReadCount(int q_no) throws Exception {
 		qnaDao.updateReadCount(q_no);
-	}
-
-	/*
-	 * 게시물 총 건수를 조회, 반환
-	 */
-	@Override
-	public int selectQnaCount() throws Exception {
-		return qnaDao.selectQnaCount();
 	}
 
 	/*

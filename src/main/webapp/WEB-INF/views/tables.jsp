@@ -57,6 +57,7 @@
                 <div class="col-12">
                     <div class="shortcodes_title mb-30">
                         <h4>QnA board</h4>
+	                    <span id="qna_total_count">총 ${qnaList.totRecordCount} 게시글</span>
                     </div>
                     <div class="shortcodes_content">
                         <div class="table-responsive">
@@ -71,13 +72,15 @@
                                     </tr>
                                 </thead>
                                 <tbody id="qna_list_tbody">
-                                
+                                <c:if test="${qnaList.totRecordCount eq 0}">
+                                	<td colspan="5" style="text-align:center">게시글이 존재하지 않습니다</td>
+                                </c:if>
                                 	<!-- board start -->
                                 	<c:forEach var="qna" items="${qnaList.itemList}">
 	                                    <tr>
 	                                        <th scope="row">${qna.q_no}</th>
 	                                        <td>
-	                                        	<a href="qna_view?q_no=${qna.q_no}&pageno=${qnaList.pageMaker.curPage}">
+	                                        	<a href="qna_view?q_no=${qna.q_no}&pageno=${qnaList.pageMaker.curPage}&search_type=${search_type}&search_value=${search_value}">
 	                                        		${qna.q_title}
 	                                        		<c:if test="${to_date eq qna.q_date}">
 	                                        			&nbsp;&nbsp;<span class="badge badge-danger">new</span>
@@ -96,7 +99,16 @@
 						
                         </div>
                     </div>
-					<input type="button" class="qna_btn write_form" pageno="${pageno}" value="게시글작성" />
+                    <select id="qna_search_sel"> 
+                    	<option value="search_title">제목</option>
+                    	<option value="search_content">내용</option>
+                    	<option value="search_all">제목+내용</option>
+                    	<option value="search_writer">작성자</option>
+                    </select>
+					<input type="text" id="qna_search_txt" value="${search_value}"/>
+					<input type="button" class="qna_btn qna_search" pageno="${pageno}" value="검색" />
+					<input type="button" class="qna_btn list_all" value="전체게시글" />
+					<input type="button" class="qna_btn write_form" pageno="${pageno}" search_type="${search_type}" search_value="${search_value}" value="게시글작성" />
                 </div>
             </div>
             
@@ -109,7 +121,7 @@
 
                             	<c:if test="${qnaList.pageMaker.prevPage > 0}">  
 	            					<li class="page-item">
-	                                    <button class="page-link" onclick="changeQnaList(${data.pageMaker.prevPage});"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
+	                                    <button class="page-link" onclick="changeQnaList(${data.pageMaker.prevPage}, '${search_type}', '${search_value}');"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
 	                               	 </li>
                                 </c:if>
                                 <c:forEach var="no" begin="${qnaList.pageMaker.blockBegin}" end="${qnaList.pageMaker.blockEnd}">
@@ -117,12 +129,12 @@
 										<li class="page-item active"><button class="page-link" href="#">${no}</button></li>
 									</c:if>
 									<c:if test="${qnaList.pageMaker.curPage != no}">
-										<li class="page-item"><button class="page-link page" onclick="changeQnaList(${no})">${no}</button></li>
+										<li class="page-item"><button class="page-link page" onclick="changeQnaList(${no}, '${search_type}', '${search_value}')">${no}</button></li>
 									</c:if>
                                 </c:forEach>
                                 <c:if test="${qnaList.pageMaker.curPage < qnaList.pageMaker.totPage}">  
 	                                <li class="page-item">
-				                        <button class="page-link" onclick="changeQnaList(${qnaList.pageMaker.nextPage});"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
+				                        <button class="page-link" onclick="changeQnaList(${qnaList.pageMaker.nextPage}, '${search_type}', '${search_value}');"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
 			                    	 </li>
                                 </c:if>
 

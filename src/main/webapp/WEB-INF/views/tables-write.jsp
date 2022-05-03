@@ -83,7 +83,7 @@
                     </div>
                     	<div id="qna_btn_container">
 							<input class="qna_btn new_write" type="button" value="등록" />
-							<input class="qna_btn list" type="button" pageno="${pageno}" value="목록" />
+							<input class="qna_btn list" type="button" pageno="${pageno}" search_type="${search_type}" search_value="${search_value}" value="목록" />
                     	</div>
                 </div>
             </div>

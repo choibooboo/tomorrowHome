@@ -16,17 +16,18 @@ import com.itwill.tomorrowHome.util.PageMakerDto;
 public class QnaRestController {
 	@Autowired
 	private QnaService qnaService;
-	
+
 	/*
 	 * 게시글 리스트 반환 (REST)
 	 */
 	@RequestMapping("/qna_list_rest")
-	public  Map<String, Object> qna_list_rest(@RequestParam(required = false, defaultValue = "1") Integer pageno) {
-		Map<String, Object> resultMap = new HashMap<>();	
+	public Map<String, Object> qna_list_rest(@RequestParam(required = false, defaultValue = "1") Integer pageno,
+			String search_type, String search_value) {
+		Map<String, Object> resultMap = new HashMap<>();
 		PageMakerDto<Qna> qnaList = null;
 		try {
-			qnaList = qnaService.selectQnaList(pageno); 
-			resultMap.put("errorCode", 1); 
+			qnaList = qnaService.selectQnaList(pageno, search_type, search_value);
+			resultMap.put("errorCode", 1);
 			resultMap.put("errorMsg", "성공");
 			resultMap.put("data", qnaList);
 		} catch (Exception e) {
@@ -36,7 +37,7 @@ public class QnaRestController {
 		}
 		return resultMap;
 	}
-	
+
 	/*
 	 * 게시글 삭제 (REST)
 	 */
@@ -64,5 +65,5 @@ public class QnaRestController {
 		}
 		return resultMap;
 	}
-	
+
 }

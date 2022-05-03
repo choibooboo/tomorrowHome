@@ -26,7 +26,7 @@ public interface QnaService {
 	/*
 	 * 게시물 리스트를 반환
 	 */
-	PageMakerDto<Qna> selectQnaList(int currentPage) throws Exception;
+	PageMakerDto<Qna> selectQnaList(int currentPage, String search_type, String search_value) throws Exception;
 
 	/*
 	 * 게시물을 삭제
@@ -42,10 +42,5 @@ public interface QnaService {
 	 * 게시물 조회수를 1 증가
 	 */
 	void updateReadCount(int q_no) throws Exception;
-
-	/*
-	 * 게시물 총 건수를 조회, 반환
-	 */
-	int selectQnaCount() throws Exception;
 
 }

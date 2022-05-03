@@ -24,7 +24,7 @@ public interface QnaDao {
 	/*
 	 * 게시물 리스트를 반환(게시물시작번호,게시물끝번호)
 	 */
-	List<Qna> selectQnaList(int start, int last) throws Exception;
+	List<Qna> selectQnaList(int start, int last, String search_type, String search_value) throws Exception;
 
 	/*
 	 * 게시물을 삭제
@@ -44,6 +44,6 @@ public interface QnaDao {
 	/*
 	 * 게시물 총 건수를 조회, 반환
 	 */
-	int selectQnaCount() throws Exception;
+	int selectQnaCount(String search_type, String search_value) throws Exception;
 
 }

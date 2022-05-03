@@ -73,11 +73,11 @@
                     </div>
                     	<div id="qna_btn_container">
                     	<c:if test="${qna.m_id eq sM_id}">
-							<input class="qna_btn update_form" type="button" pageno="${pageno}" q_no="${qna.q_no}" value="수정" />
-							<input class="qna_btn delete" type="button" pageno="${pageno}" q_no="${qna.q_no}" value="삭제" />
+							<input class="qna_btn update_form" type="button" pageno="${pageno}" q_no="${qna.q_no}" search_type="${search_type}" search_value="${search_value}" value="수정" />
+							<input class="qna_btn delete" type="button" pageno="${pageno}" q_no="${qna.q_no}" search_type="${search_type}" search_value="${search_value}" value="삭제" />
                     	</c:if>
-							<input class="qna_btn reply" type="button" pageno="${pageno}" q_no="${qna.q_no}" value="답글" />
-							<input class="qna_btn list" type="button" pageno="${pageno}" value="목록" />
+							<input class="qna_btn reply" type="button" pageno="${pageno}" q_no="${qna.q_no}" search_type="${search_type}" search_value="${search_value}" value="답글" />
+							<input class="qna_btn list" type="button" pageno="${pageno}" search_type="${search_type}" search_value="${search_value}" value="목록" />
                     	</div>
                 </div>
             </div>

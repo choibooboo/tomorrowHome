@@ -6,39 +6,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwill.tomorrowHome.dao.CartDao;
-import com.itwill.tomorrowHome.dao.CartDaoImpl;
-import com.itwill.tomorrowHome.dao.ProductDao;
 import com.itwill.tomorrowHome.domain.Cart;
-import com.itwill.tomorrowHome.domain.Product;
 
-//2022.04.17. PM 06:10 권하나 수정
 @Service
 public class CartServiceImpl implements CartService {
-		@Autowired
-		private CartDao cartDao;
-		public CartServiceImpl() {
-		cartDao = new CartDaoImpl();
-	}
+	@Autowired
+	private CartDao cartDao;
+
 	@Override
 	public int addInsert(int c_qty,int p_no,String m_id) throws Exception {
 		if (cartDao.productExist(m_id, p_no)) {
-			return cartDao.updateQtyBynoAndid(c_qty,p_no, m_id);
-		}else {
-			return cartDao.addInsert(c_qty, p_no, m_id);
-		}
-		
-		
-		
-	}
-	/* 2022.04.17. PM 9:25 권하나 작성중
-	public int addInsert(int c_qty,int p_no,String m_id) throws Exception {
-		if(cartDao.productExist(Cart cart)) {
-			return cartDao.updateQty(p_no, c_qty);
+			return cartDao.updateQtyBynoAndid(c_qty, p_no, m_id);
 		}else {
 			return cartDao.addInsert(c_qty, p_no, m_id);
 		}
 	}
-	 */
 	
 	@Override
 	public int updateQty(int c_no, int c_qty) throws Exception {
