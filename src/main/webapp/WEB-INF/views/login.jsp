@@ -75,9 +75,9 @@
                             <button type="submit" id="login_btn" class="btn btn-primary btn-sm">Login</button>
                         </form>
                         <!-- Forget Password -->
-                        <div class="forget_pass mt-15">
+<!--                         <div class="forget_pass mt-15">
                             <a href="#">Forget Password?</a>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
 
