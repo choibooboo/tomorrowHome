@@ -97,6 +97,7 @@ $('#order_detail_modal').on('show.bs.modal', function(e){
 	$.ajax({
 		url: "order_detail_rest",
 		method: "post",
+		async: false,
 		data: {"o_no" : o_no},
 		dataType: "json",
 		success:function(resultObj){
@@ -105,7 +106,6 @@ $('#order_detail_modal').on('show.bs.modal', function(e){
 				let order = resultObj.data;
 				let fDate = formatDate(order.o_date);
 				let pay = order.o_pay_method == "CoD" ? "Cash on Delevery" : order.o_pay_method;
-				//console.log($("#orderer_info_body td:nth-child(0)"));
 				$("#orderer_info_body td")[0].innerHTML = order.o_desc;
 				$("#orderer_info_body td")[1].innerHTML = fDate;
 				$("#orderer_info_body td")[2].innerHTML = order.m_id;

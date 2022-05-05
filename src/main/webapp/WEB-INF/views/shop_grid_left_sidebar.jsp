@@ -40,10 +40,10 @@
         <div class="container h-100">
             <div class="row h-100 align-items-center">
                 <div class="col-12">
-                    <h5>Shop Grid</h5>
+                    <h5>Shop</h5>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                        <li class="breadcrumb-item active">Shop Grid</li>
+                        <li class="breadcrumb-item active">Shop</li>
                     </ol>
                 </div>
             </div>
