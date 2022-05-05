@@ -12,8 +12,8 @@
 					<div class="welcome-note">
 						<span class="popover--text" data-toggle="popover"
 							data-content="Welcome to Bigshop ecommerce template."><i
-							class="icofont-info-square"></i></span> <span class="text">Welcome
-							to tomorrowHome.</span>
+							class="icofont-info-square"></i></span> 
+							<span class="text">Welcome to tomorrowHome.</span>
 					</div>
 				</div>
 			</div>

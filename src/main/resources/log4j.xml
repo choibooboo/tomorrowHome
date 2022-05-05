@@ -11,12 +11,13 @@
 		</layout>
 	</appender>
 	
-	<!-- Application Loggers -->
+	<!-- Application Loggers 
 	<logger name="com.itwill.tomorrowHome">
 		<level value="info" />
 	</logger>
+	-->
 	
-	<!-- 3rdparty Loggers -->
+	<!-- 3rdparty Loggers 
 	<logger name="org.springframework.core">
 		<level value="info" />
 	</logger>
@@ -32,6 +33,7 @@
 	<logger name="org.springframework.web">
 		<level value="info" />
 	</logger>
+	-->
 
 	<!-- Root Logger -->
 	<root>
