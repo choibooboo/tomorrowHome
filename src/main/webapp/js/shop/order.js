@@ -115,8 +115,10 @@ $('#order_detail_modal').on('show.bs.modal', function(e){
 				$("#receiver_info_body td")[1].innerHTML = order.o_rv_phone;
 				$("#receiver_info_body td")[2].innerHTML = order.o_rv_address;
 				
+				let o_sub_price = 0;
 				let itemHtmlBuffer = ``;
 				order.orderItemList.forEach(function(item, i){
+					o_sub_price += parseInt(item.oi_qty) * parseInt(item.product.p_price);
 					itemHtmlBuffer += `<tr>
 							              <th scope="row"><img style="width:37px;height:37px;" src="img/p_img/${item.product.imageList[0].im_name}" /></th>
 							              <td><a href="product_detail?p_no=${item.product.p_no}">${item.product.p_name}</a></td>
@@ -124,7 +126,7 @@ $('#order_detail_modal').on('show.bs.modal', function(e){
 							              <td>&#8361;${numberWithCommas(item.oi_qty * item.product.p_price)}</td>
 							           </tr>`;
 				});
-				isShippingPay = order.o_price - 2500 <= 50000;
+				isShippingPay = o_sub_price < 50000;
 				itemHtmlBuffer += `<tr>
 						              <th scope="row" colspan="4">total : &#8361;${numberWithCommas(order.o_price) }`;
 				if(isShippingPay){

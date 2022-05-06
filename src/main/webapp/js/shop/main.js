@@ -1,7 +1,7 @@
 $(function(){
 	setInterval(function(){
 		get_now_time();
-	}, 500);
+	}, 1000);
 });
 
 function get_now_time(){
